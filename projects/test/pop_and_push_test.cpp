@@ -17,21 +17,21 @@ using namespace ilrd;
 
 int main()
 {
-    QuickPopDS<int> quickPop(CompareInts);
+    QuickPopDS<int> quickPop;
 
     quickPop.QuickPopDSPush(1);
+    quickPop.QuickPopDSPush(20);
     quickPop.QuickPopDSPush(5);
-    quickPop.QuickPopDSPush(6);
-    quickPop.QuickPopDSPush(2);
-    quickPop.QuickPopDSPush(0);
+    quickPop.QuickPopDSPush(30);
+    quickPop.QuickPopDSPush(10);
 
     std::cout << "Now Poping" << std::endl;
 
    std::cout << quickPop.QuickPopDSPop() << std::endl;
-   std::cout << quickPop.QuickPopDSPop() << std::endl;
-   std::cout << quickPop.QuickPopDSPop() << std::endl;
-   std::cout << quickPop.QuickPopDSPop() << std::endl;
-   std::cout << quickPop.QuickPopDSPop() << std::endl;
+    std::cout << quickPop.QuickPopDSPop() << std::endl;
+    std::cout << quickPop.QuickPopDSPop() << std::endl;
+    std::cout << quickPop.QuickPopDSPop() << std::endl;
+    std::cout << quickPop.QuickPopDSPop() << std::endl;
 
 
     return 0;

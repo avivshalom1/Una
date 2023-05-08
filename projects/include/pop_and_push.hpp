@@ -9,6 +9,8 @@
 
 #include <functional>
 #include <iostream>
+#include <semaphore>
+#include <mutex>
 
 #include "utils.hpp"
 
@@ -66,20 +68,26 @@ private:
     size_t m_size;
     std::function<bool(T, T)> m_cmpFunc;
     Node<T> *m_head;
+    std::mutex m_mutex;
+    std::counting_semaphore<std::__semaphore_impl::_S_max> m_sem;
 };
 
 template <typename T>
 inline QuickPopDS<T>::QuickPopDS(std::function<bool(T lhs, T rhs)> cmpFunc) : 
 m_size(0),
 m_cmpFunc(cmpFunc),
-m_head(nullptr)
+m_head(nullptr),
+m_sem(0)
 {
-    std::cout << "Ctor" << std::endl;
 }
 
 template <typename T>
 inline T QuickPopDS<T>::QuickPopDSPop()
 {
+    m_sem.acquire();
+
+    std::lock_guard<std::mutex> lock(m_mutex);
+
     Node<T> *toDelete = m_head;
     T toReturn = toDelete->m_value;
 
@@ -98,7 +106,7 @@ inline T QuickPopDS<T>::QuickPopDSPop()
 template <typename T>
 inline void QuickPopDS<T>::QuickPopDSPush(T value)
 {
-    std::cout << "Push" << std::endl;
+    std::lock_guard<std::mutex> lock(m_mutex);
 
     if(!m_head)
     {
@@ -109,23 +117,29 @@ inline void QuickPopDS<T>::QuickPopDSPush(T value)
     {
         Node<T> *curr = m_head;
 
-        while(m_cmpFunc(curr->m_value, value) && curr->m_next )
+        while(m_cmpFunc(value, curr->m_value) && curr->m_next )
         {
-            std::cout << "while" << std::endl;
             curr = curr->m_next;
         }
         
-        Node<T> *temp = curr->m_next;
+        Node<T> *temp = curr->m_prev;
 
-        curr->m_next = new Node<T>(value, curr, temp);
+        curr->m_prev = new Node<T>(value, temp, curr);
 
         if(temp)
         {
-            temp->m_prev = curr->m_next;
+            temp->m_next = curr->m_prev;
+        }
+
+        else
+        {
+            m_head = curr->m_prev;
         }
     }
 
     m_size++;
+    m_sem.release();
+
 }
 
 template <typename T>
