@@ -1,8 +1,8 @@
 /************************************************
-* Developer:      Aviv Shalom              	    *
+* Developer:      Aviv Shalom                   *
 * Version:        1.0                           *   
 * Date:           08.03.23                      *   
-* Description:    Zemingo Home Assignment (.hpp) *
+* Description:    Zemingo Home Assignment (.hpp)*
 *************************************************/
 #ifndef __POP_AND_PUSH__
 #define __POP_AND_PUSH__
@@ -58,7 +58,7 @@ PushAndPop<T>::PushAndPop(std::function<bool(T lhs, T rhs)> cmpFunc) :
 m_size(0),
 m_cmpFunc(cmpFunc),
 m_head(nullptr),
-m_sem(0)
+m_sem(m_size)
 {
 
 }
@@ -225,6 +225,7 @@ inline T QuickPush<T>::Pop()
     
     else
     {
+        maxNode->m_next = nullptr;
         this->m_head = this->m_head->m_next;
     }
 

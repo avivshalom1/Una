@@ -1,17 +1,15 @@
 /**************************************************
-* Developer:      Aviv Shalom              	      *
+* Developer:      Aviv Shalom                     *
 * Version:        1.0                             *   
 * Date:           08.03.23                        *   
 * Description:    Testing Zemingo Home Assignment *
 ***************************************************/
-
 #include "pop_and_push.hpp"
 
 bool CompareInts(int lhs, int rhs)
 {
     return lhs < rhs;
 }
-
 
 using namespace ilrd;
 
@@ -32,7 +30,6 @@ int main()
     std::cout << quickPop.Pop() << std::endl;
     std::cout << quickPop.Pop() << std::endl;
     std::cout << quickPop.Pop() << std::endl;
-
 
    QuickPush<int> quickPush;
 
