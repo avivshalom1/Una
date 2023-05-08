@@ -17,22 +17,38 @@ using namespace ilrd;
 
 int main()
 {
-    QuickPopDS<int> quickPop;
+   QuickPop<int> quickPop;
 
-    quickPop.QuickPopDSPush(1);
-    quickPop.QuickPopDSPush(20);
-    quickPop.QuickPopDSPush(5);
-    quickPop.QuickPopDSPush(30);
-    quickPop.QuickPopDSPush(10);
+    quickPop.Push(1);
+    quickPop.Push(20);
+    quickPop.Push(5);
+    quickPop.Push(30);
+    quickPop.Push(10);
 
     std::cout << "Now Poping" << std::endl;
 
-   std::cout << quickPop.QuickPopDSPop() << std::endl;
-    std::cout << quickPop.QuickPopDSPop() << std::endl;
-    std::cout << quickPop.QuickPopDSPop() << std::endl;
-    std::cout << quickPop.QuickPopDSPop() << std::endl;
-    std::cout << quickPop.QuickPopDSPop() << std::endl;
+    std::cout << quickPop.Pop() << std::endl;
+    std::cout << quickPop.Pop() << std::endl;
+    std::cout << quickPop.Pop() << std::endl;
+    std::cout << quickPop.Pop() << std::endl;
+    std::cout << quickPop.Pop() << std::endl;
 
+
+   QuickPush<int> quickPush;
+
+    quickPush.Push(1);
+    quickPush.Push(20);
+    quickPush.Push(5);
+    quickPush.Push(10);
+    quickPush.Push(30);
+
+    std::cout << "Now Poping" << std::endl;
+
+    std::cout << quickPush.Pop() << std::endl;
+    std::cout << quickPush.Pop() << std::endl;
+    std::cout << quickPush.Pop() << std::endl;
+    std::cout << quickPush.Pop() << std::endl;
+    std::cout << quickPush.Pop() << std::endl;
 
     return 0;
 }
