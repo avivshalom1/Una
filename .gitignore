@@ -6,6 +6,8 @@
 !**/*.hpp
 !*.c
 !*.cpp
+!*.py
+!**/*.py
 !*.md
 !*/ws1
 !*.myfuncs
