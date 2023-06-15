@@ -247,6 +247,8 @@ inline void QuickPush<T>::Push(T value)
 
     else
     {
+        
+
         typename PushAndPop<T>::Node *curr = this->m_head;
 
         while(curr->m_next)
