@@ -35,7 +35,7 @@ Make sure you have these dependencies installed before running the game.
 ## Database Connection
 
 The game connects to a MySQL database to store the player scores. The database connection details are in the code.
-
+Install the MySQL client: Ensure that you have the MySQL client installed on your computer. You can download the MySQL Community Edition from the official MySQL website (https://dev.mysql.com/downloads/) and select the appropriate version for your operating system.
 
 ## How to Run
 

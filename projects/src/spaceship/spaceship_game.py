@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import pygame
 import sys
 import math
@@ -20,12 +21,14 @@ with open('config.json', 'r') as configfile:
     config = json.load(configfile)
 
 # Replace the connection details with your own
+host = config['database']['host']
 database = config['database']['name']
 user = config['database']['user']
 password = config['database']['password']
 
 # Establish the connection
 conn = mysql.connector.connect(
+    host=host,
     database=database,
     user=user,
     password=password
@@ -58,8 +61,9 @@ LIMIT 5
 
 
 # Set up the display
-width, height = 0, 0
-screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+width, height = 200, 200
+screen = pygame.display.set_mode((width, height))
+#screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
 
 # Load spaceship image
 spaceship_image = pygame.image.load(config['images']['spaceship']).convert_alpha()
