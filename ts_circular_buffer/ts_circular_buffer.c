@@ -14,7 +14,8 @@
 #define THREAD_COUNT 100
 #define WRITERS 50
 #define READERS 50
-sem_t sem;
+sem_t empty_sem;
+sem_t full_sem;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 typedef struct circular_buffer
@@ -134,8 +135,9 @@ int main()
     pthread_t threads[THREAD_COUNT];
     size_t i = 0;
 
-    /* can defend full buffer or empty buffer, not both */
-	sem_init(&sem, 0, 0);
+    /* can defend both full buffer or empty buffer */
+	sem_init(&empty_sem, 0, 0);
+	sem_init(&full_sem, 0, CAPACITY);
 
     for(i = 0; i < WRITERS; i++)
     {
