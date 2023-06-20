@@ -10,11 +10,11 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#define CAPACITY 40
-#define THREAD_COUNT 100
-#define WRITERS 50
-#define READERS 50
-sem_t sem;
+#define CAPACITY 30
+#define WRITERS 40
+#define READERS 40
+#define THREAD_COUNT (READERS + WRITERS)
+sem_t empty_spaces;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 typedef struct circular_buffer
@@ -90,15 +90,11 @@ int Read(circular_buffer_t *circular_buffer)
 
 void *ReadThread(void *arg)
 {
-    printf("read\n");
-
     pthread_mutex_lock(&mutex);
 
-
-    sem_wait(&sem);
     printf("%d\n", Read((circular_buffer_t *)arg));
 
-
+    sem_post(&empty_spaces);
     pthread_mutex_unlock(&mutex);
     return NULL;
 }
@@ -107,11 +103,8 @@ void *WriteThread(void *arg)
 {
     static int counter = 0;
 
-    printf("write\n");
-
+    sem_wait(&empty_spaces);
     pthread_mutex_lock(&mutex);
-
-    sem_wait(&sem);
 
     Write((circular_buffer_t *)arg, counter);
 
@@ -134,17 +127,22 @@ int main()
     pthread_t threads[THREAD_COUNT];
     size_t i = 0;
 
-	sem_init(&full_spaces, 0, 0);
+    /* can defend from empty buffer 
+	sem_init(&full_spaces, 0, 0);*/
+
+    /* can defend from full buffer */
 	sem_init(&empty_spaces, 0, CAPACITY);
 
-    for(i = 0; i < READERS; i++)
+    for(i = 0; i < WRITERS; i++)
     {
-        pthread_create(&threads[i], NULL, ReadThread, circular_buffer);
+        pthread_create(&threads[i], NULL, WriteThread, circular_buffer);
     }
+
+    sleep(2);
 
     for(; i < READERS + WRITERS; i++)
     {
-        pthread_create(&threads[i], NULL, WriteThread, circular_buffer);
+        pthread_create(&threads[i], NULL, ReadThread, circular_buffer);
     }
 
     for(i = 0; i < THREAD_COUNT; i++)
