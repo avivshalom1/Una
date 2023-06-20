@@ -14,10 +14,8 @@
 #define THREAD_COUNT 100
 #define WRITERS 50
 #define READERS 50
-sem_t empty_spaces;
-sem_t full_spaces;
-pthread_mutex_t mutex_read = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 typedef struct circular_buffer
 {
@@ -94,15 +92,11 @@ void *ReadThread(void *arg)
 {
     printf("read\n");
 
-    pthread_mutex_lock(&mutex_read);
+    pthread_mutex_lock(&mutex);
 
-
-    sem_wait(&full_spaces);
     printf("%d\n", Read((circular_buffer_t *)arg));
 
-    sem_post(&empty_spaces);
-
-    pthread_mutex_unlock(&mutex_read);
+    pthread_mutex_unlock(&mutex);
     return NULL;
 }
 
@@ -112,17 +106,14 @@ void *WriteThread(void *arg)
 
     printf("write\n");
 
-    pthread_mutex_lock(&mutex_write);
+    pthread_mutex_lock(&mutex);
 
-    sem_wait(&empty_spaces);
 
     Write((circular_buffer_t *)arg, counter);
 
     counter++;
 
-    sem_post(&full_spaces);
-
-    pthread_mutex_unlock(&mutex_write);
+    pthread_mutex_unlock(&mutex);
 
 
     return NULL;
@@ -141,8 +132,6 @@ int main()
     pthread_t threads[THREAD_COUNT];
     size_t i = 0;
 
-	sem_init(&full_spaces, 0, 0);
-	sem_init(&empty_spaces, 0, CAPACITY);
 
     for(i = 0; i < READERS; i++)
     {
