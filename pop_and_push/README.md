@@ -24,7 +24,7 @@ To use the push and pop data structure, include the appropriate header file:
 
 To create an instance of the data structure, simply call the constructor. 
 You may optionally provide a comparison function for sorting the data (default is std::less<T>()):
-
+```
 QuickPush<int> myPush;             // create instance of QuickPush with int data
 QuickPop<std::string> myPop([](const std::string& lhs, const std::string& rhs) 
                               { return lhs.size() < rhs.size(); });  // create instance of QuickPop with std::string data, sorted by string length
@@ -37,7 +37,7 @@ int myInt = myPush.Pop();           // pop data from QuickPush data structure in
 std::string myString = myPop.Pop(); // pop data from QuickPop data structure into myString
                                                                
   
-                                                               
+```                                                            
 **Implementation Details**
 
 Both implementations are thread-safe and use a doubly-linked list for storing the data. QuickPush sorts the data in ascending order, while QuickPop returns the maximum value in the data structure.
