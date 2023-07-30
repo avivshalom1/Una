@@ -8,6 +8,16 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
 db = SQLAlchemy(app)
 
+def delete_all_data():
+    try:
+        db.session.query(Redirect).delete()
+        db.session.commit()
+        print("All data deleted successfully.")
+    except Exception as e:
+        db.session.rollback()
+        print("Error deleting data:", e)
+
+
 class Redirect(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     old_url = db.Column(db.String(50))
@@ -21,13 +31,13 @@ class Redirect(db.Model):
 def home():
     return 'Hello, Flask!!'
 
-@app.route('/api/redirections', methods=['GET'])
+@app.route('/redirections', methods=['GET'])
 def api_redirects():
     redirections_data = Redirect.query.all()
     redirections = [{'id': r.id, 'old_url': r.old_url, 'your_url': r.your_url} for r in redirections_data]
     return jsonify(redirections)
 
-@app.route('/api/redirections/add', methods=['GET', 'POST'])
+@app.route('/redirections/add', methods=['GET', 'POST'])
 def api_add_redirection():
     # Your code to handle GET and POST requests here
     if request.method == 'POST':
